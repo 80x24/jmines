@@ -1,0 +1,93 @@
+body {
+	font-family: sans-serif;
+	max-width: 768px;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #fff;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+canvas {
+	background-color: #f2f1f0;
+}
+#mobile {
+	display: none;
+}
+#timer {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 24px;
+	font-weight: bold;
+	float: left;
+	padding-top: 5px;
+	padding-left: 20px;
+}
+#flag-count {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 24px;
+	font-weight: bold;
+	float: left;
+	padding-top: 10px;
+}
+.timer-container {
+	width: 100px;
+	height: 64px;
+	position: relative;
+	top: -300px;
+	right: -300px;
+	/*border: 1px solid black;*/
+}
+.flag-container {
+	width: 100px;
+	height: 64px;
+	position: relative;
+	top: -300px;
+	right: -300px;
+	/*border: 1px solid black;*/
+}
+.restart-container {
+	width: 100px;
+	height: 64px;
+	position: relative;
+	top: -300px;
+	right: -325px;
+}
+#restart-button {
+	width: 75px;
+	height: 35px;
+}
+#result-text {
+	padding-top: 5px;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 20px;
+	font-weight: bold;
+}
+.clock {
+	width: 45px;
+	height: 45px;
+	float: right;
+}
+.flag {
+	width: 35px;
+	height: 35px;
+	float: right;
+}
+.flag-image {
+	padding-top: 10px;
+}
+.canvas-container {
+	width: 300px;
+	height: 300px;
+}
+
+@media only screen and (max-width: 640px) {
+	body {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+	#mobile {
+		display: block;
+	}
+	#game-container {
+		display: none;
+	}
+}
