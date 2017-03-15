@@ -4,16 +4,8 @@ probably reflect that. Enjoy.
 */
 
 /*
-@@TODO: Implement win.
-@@TODO: code review.
+@@TODO: code review. Bug hunt.
 
-
-@@FIX: Look into what happens with reveals and flag squares. Righht now they
-aren't wiped out by revealTiles(). Linux mines does wipe them out but I kind
-of like that they stay on.
-
-We also win if all but 10 of the squares are clicked and the squares that
-are not clicked are bomb squares.
 */
 
 // Globals are bad. mmmkay
@@ -50,12 +42,15 @@ function main() {
 		clearInterval(COUNTER);
 		document.getElementById("timer").innerHTML = 0;
 		document.getElementById("flag-count").innerHTML = "0/10";
+		document.getElementById("result-text").innerHTML = "---";
+		// Give the user the ability to click again.
+		canvasElement.addEventListener("click", regClick, false);
 		init();
 	}, false);
 	init();
 }
 
-function init(canvas) {
+function init() {
 	// TODO: clean this up. It's gross.
 	// BOARD STATE
 	// 0 hidden, no bomb.
@@ -192,30 +187,30 @@ function init(canvas) {
 	// 10: exploded.svg
 	
 	if (!LOADED_IMAGES) {
-	images = new Array(11);
-	images[0] = new Image();
-	images[0].src = "./src/img/flag.svg";
-	images[1] = new Image();
-	images[1].src = "./src/img/1mines.svg";
-	images[2] = new Image();
-	images[2].src = "./src/img/2mines.svg";
-	images[3] = new Image();
-	images[3].src = "./src/img/3mines.svg";
-	images[4] = new Image();
-	images[4].src = "./src/img/4mines.svg";
-	images[5] = new Image();
-	images[5].src = "./src/img/5mines.svg";
-	images[6] = new Image();
-	images[6].src = "./src/img/6mines.svg";
-	images[7] = new Image();
-	images[7].src = "./src/img/7mines.svg";
-	images[8] = new Image();
-	images[8].src = "./src/img/8mines.svg";
-	images[9] = new Image();
-	images[9].src = "./src/img/mine.svg";
-	images[10] = new Image();
-	images[10].src = "./src/img/exploded.svg";
-	LOADAED_IMAGES = true;
+		images = new Array(11);
+		images[0] = new Image();
+		images[0].src = "./src/img/flag.svg";
+		images[1] = new Image();
+		images[1].src = "./src/img/1mines.svg";
+		images[2] = new Image();
+		images[2].src = "./src/img/2mines.svg";
+		images[3] = new Image();
+		images[3].src = "./src/img/3mines.svg";
+		images[4] = new Image();
+		images[4].src = "./src/img/4mines.svg";
+		images[5] = new Image();
+		images[5].src = "./src/img/5mines.svg";
+		images[6] = new Image();
+		images[6].src = "./src/img/6mines.svg";
+		images[7] = new Image();
+		images[7].src = "./src/img/7mines.svg";
+		images[8] = new Image();
+		images[8].src = "./src/img/8mines.svg";
+		images[9] = new Image();
+		images[9].src = "./src/img/mine.svg";
+		images[10] = new Image();
+		images[10].src = "./src/img/exploded.svg";
+		LOADAED_IMAGES = true;
 	}
 
 	render();
@@ -287,11 +282,13 @@ function rightClick() {
 			FLAG_BOARD[row][col] = 0;
 			FLAGS--;
 		}
+		if (checkWin()) {
+			win();
+		}
 	}
 	else {
 		console.log("Right click didn't click in bounds. Rare.");
 	}
-	checkWin();
 	render();
 	renderFlag();
 	updateFlagCount();
@@ -333,19 +330,29 @@ function regClick() {
 		// we click on a blank hidden space.
 		else if (BOARD[row][col] == 0) {
 			revealTile(row, col);
+			// @@REFACTOR: Try to remove this.
+			// This is needed because the number of revealed tiles is not
+			// updated properly until the next check if more than one tile is
+			// revealed. This is that extra check to combat this.
+			if (checkWin()) {
+				win();
+			}
 		}
 		else {
 			console.log("Nothing happens.");
+		}
+
+		if (checkWin()) {
+			win();
 		}
 	}
 	else {
 		console.log("No collision. Should be rare. (can't click on a flag.");
 	}
 
-	// @@TODO: remove the abililty to click after losing.
 	render();
 	renderFlag();
-	//printBoard();
+	printBoard();
 }
 
 function checkCollision() {
@@ -379,24 +386,38 @@ function checkCollision() {
 }
 
 function checkWin() {
-	// If there are 10 flags, and the flags are on the bombs, we win.
+	// Make sure that there are 54 revealed squares. Leaving 10 bombs.
+	// We need to make sure there aren't any flags on blank spaces.
 	var won = false;
-	var numOnBombs = 0;
-	if (FLAGS == 10) {
-		for (var row = 0; row < 8; row++) {
-			for (var col = 0; col < 8; col++) {
-				if (BOARD[row][col] == 1 && FLAG_BOARD[row][col] == 1) {
-					numOnBombs++;
-				}
+	for (var row = 0; row < 8; row++) {
+		for (var col = 0; col < 8; col++) {
+			if (FLAG_BOARD[row][col] == 1 && BOARD[row][col] != 1) {
+				won = false;
 			}
 		}
-		if (numOnBombs == 10) {
-			won = true;
+	}
+	var numrevealed = 0;
+	for (var row = 0; row < 8; row++) {
+		for (var col = 0; col < 8; col++) {
+			if (BOARD[row][col] == 2 || (BOARD[row][col] >= 5 && BOARD[row][col] < 13)) {
+				numrevealed += 1;
+			}
 		}
 	}
-	// If there are < 10 flags, but all of the squares are uncovered
-	// except for the bomb.
+	if (numrevealed == 54) {
+		won = true;
+	}
 	return won;
+}
+
+function win() {
+	var resultText = document.getElementById("result-text");
+	resultText.style = "color: green";
+	resultText.innerHTML = "You Win!";
+	clearInterval(COUNTER);
+	// remove ability to click on board.
+	// They can still right click. Is this bad?
+	document.getElementById("canvas").removeEventListener("click", regClick);
 }
 
 function lose() {
@@ -408,12 +429,19 @@ function lose() {
 			}
 		}
 	}
-	console.log("YOU LOST!");
+	var resultText = document.getElementById("result-text");
+	resultText.style = "color: red";
+	resultText.innerHTML = "You Lost";
+	clearInterval(COUNTER);
+	// remove ability to click on board.
+	// They can still right click. Is this bad?
+	document.getElementById("canvas").removeEventListener("click", regClick);
 }
 
 function revealTile(row, col) {
 	// recursive function to reveal blank tiles. Make sure it's a hidden tile that's not a bomb.
-	if (row >= 0 && row < 8 && col >= 0 && col < 8 && (BOARD[row][col] == 0 || BOARD[row][col] >= 13)) {
+	// should probably check that there isn't a flag as well.
+	if (row >= 0 && row < 8 && col >= 0 && col < 8 && (BOARD[row][col] == 0 || BOARD[row][col] >= 13) && FLAG_BOARD[row][col] != 1) {
 		// set the tile to revealed.
 		if (BOARD[row][col] != 0) {
 			BOARD[row][col] = BOARD[row][col] - 8;
@@ -451,6 +479,7 @@ function render() {
 					// Mines. unclikced.
 					canvas.fillStyle = unclicked;
 					canvas.fillRect(locx, locy, 32, 32);
+					// dev hacks. show bombs.
 					//canvas.drawImage(images[9], locx+offset, locy+offset, 20, 20);
 					break;
 				case 2:

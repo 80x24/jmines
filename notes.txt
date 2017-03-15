@@ -18,3 +18,8 @@ that are adjacent to the non-numbered squares.
 
 - There is an animation for mouse button down. I'm probably not going to
 implement that. I'm also not implementing ? blocks.
+
+
+Win con: If you ever click on a bomb, you die.
+If you can reveal 54 squares, you win? Does this mean there are 10 bombs.
+If I have 5 flags, and 5 unclicked. Leaving 54 unclicked, I should win.
