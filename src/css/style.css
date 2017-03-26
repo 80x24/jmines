@@ -1,5 +1,6 @@
+/* This file is part of jmines */
 body {
-	font-family: sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	max-width: 768px;
 	margin-left: auto;
 	margin-right: auto;
@@ -10,23 +11,27 @@ body {
 canvas {
 	background-color: #f2f1f0;
 }
+.canvas-container {
+	width: 300px;
+	height: 300px;
+}
+a {
+	text-decoration: none;
+}
+a:visited {
+	color: blue;
+}
+#help {
+	padding-top: 5px;
+}
 #mobile {
 	display: none;
 }
 #timer {
 	font-family: Helvetica, Arial, sans-serif;
-	font-size: 24px;
-	font-weight: bold;
-	float: left;
-	padding-top: 5px;
-	padding-left: 20px;
-}
-#flag-count {
-	font-family: Helvetica, Arial, sans-serif;
-	font-size: 24px;
-	font-weight: bold;
-	float: left;
-	padding-top: 10px;
+	font-size: 18px;
+	margin-top: -35px;
+	margin-left: 50px;
 }
 .timer-container {
 	width: 100px;
@@ -34,22 +39,18 @@ canvas {
 	position: relative;
 	top: -300px;
 	right: -300px;
-	/*border: 1px solid black;*/
 }
-.flag-container {
-	width: 100px;
-	height: 64px;
-	position: relative;
-	top: -300px;
-	right: -300px;
-	/*border: 1px solid black;*/
+.clock {
+	width: 35px;
+	height: 35px;
+	padding-top: 10px;
 }
 .restart-container {
 	width: 100px;
 	height: 64px;
 	position: relative;
 	top: -300px;
-	right: -325px;
+	right: -300px;
 }
 #restart-button {
 	width: 75px;
@@ -57,26 +58,31 @@ canvas {
 }
 #result-text {
 	padding-top: 5px;
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: monospace;
 	font-size: 20px;
-	font-weight: bold;
 }
-.clock {
-	width: 45px;
-	height: 45px;
-	float: right;
+.flag-container {
+	width: 100px;
+	height: 64px;
+	position: relative;
+	top: -300px;
+	right: -300px;
 }
 .flag {
 	width: 35px;
 	height: 35px;
-	float: right;
 }
 .flag-image {
 	padding-top: 10px;
+	width: 50px;
 }
-.canvas-container {
-	width: 300px;
-	height: 300px;
+#flag-count {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 18px;
+	width: 50px;
+	height: 25px;
+	margin-top: -35px;
+	margin-left: 40px;
 }
 
 @media only screen and (max-width: 640px) {

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>How to play jmines</title>
+        <style>
+        body {
+            max-width: 768px;
+            padding-left: 5px;
+            padding-right: 5px;
+            margin-left: auto;
+            margin-right: auto;
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 18px;
+            line-height: 1.6em;
+        }
+        </style>
+    </head>
+    <body>
+        <!-- This file is part of jmines -->
+        <h1>Game Rules</h1>
+        <p>The goal of jmines is to clear the board without detonating any
+            of the mines in the fastest amount of time. The clock to the right
+            indicates the time it takes you to clear the board.
+        </p>
+        <ol>
+            <li>The game begins with a board of covered tiles. Click on any tile
+                to uncover it. This will reveal one of the following items:
+                <ul>
+                    <li><b>A number</b> which represents the number of mines in
+                        the adjacent tiles. These numbers help you deduce where the mines are
+                        so that you can mark them with a flag. Right click to mark a tile with a flag.
+                    </li>
+                    <li>
+                        <b>A blank tile</b>, which means there are no mines under any of
+                        the adjacent tiles.
+                    </li>
+                    <li><b>A mine</b>, which will detonate and cause you to lose.</li>
+                </ul>
+            </li>
+            <li>Repeat the previous step until you have uncovered all of the tiles
+                which do not have mines underneath them.
+            </li>
+        </ol>
+    </body>
+</html>

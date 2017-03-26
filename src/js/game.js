@@ -1,10 +1,22 @@
 /*
 Note: This is my first real foray into JavaScript, so that code below will
 probably reflect that. Enjoy.
-*/
 
-/*
-@@TODO: code review. Bug hunt.
+
+Copyright 2017 Kyle Schreiber
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
@@ -18,7 +30,6 @@ var FLAGS = 0;
 var MOUSEPOS = null;
 var canvasElement = document.getElementById("canvas");
 var canvas = canvasElement.getContext("2d");
-// @@OPTIMIZE: Make this not a global.
 var images = null;
 var LOADED_IMAGES = false;
 
@@ -43,6 +54,7 @@ function main() {
 		document.getElementById("timer").innerHTML = 0;
 		document.getElementById("flag-count").innerHTML = "0/10";
 		document.getElementById("result-text").innerHTML = "---";
+		document.getElementById("result-text").removeAttribute("style");
 		// Give the user the ability to click again.
 		canvasElement.addEventListener("click", regClick, false);
 		init();
@@ -51,7 +63,6 @@ function main() {
 }
 
 function init() {
-	// TODO: clean this up. It's gross.
 	// BOARD STATE
 	// 0 hidden, no bomb.
 	// 1 hidden, bomb.
@@ -97,8 +108,6 @@ function init() {
 			FLAG_BOARD[row][col] = 0;
 		}
 	}
-
-	//printBoard();
 
 	for (var row = 0; row < 8; row++) {
 		for (var col = 0; col < 8; col++) {
@@ -171,7 +180,6 @@ function init() {
 			}
 		}
 	}
-	printBoard();
 
 	// LOAD ALL OF THE IMAGES
 	// 0: flag.svg
@@ -269,8 +277,6 @@ function rightClick() {
 		var row = collision_values[1];
 		var col = collision_values[2];
 		// check that we are only putting flags on hidden tiles.
-		// @@REFACTOR: This may be better in checkCollision or separate flag
-		// collision file.
 		if (FLAG_BOARD[row][col] == 0 && (BOARD[row][col] >= 13 || BOARD[row][col] <= 1)) {
 			FLAG_BOARD[row][col] = 1;
 			FLAGS++;
@@ -292,7 +298,6 @@ function rightClick() {
 	render();
 	renderFlag();
 	updateFlagCount();
-	printFlagBoard();
 }
 
 function updateFlagCount() {
@@ -330,7 +335,6 @@ function regClick() {
 		// we click on a blank hidden space.
 		else if (BOARD[row][col] == 0) {
 			revealTile(row, col);
-			// @@REFACTOR: Try to remove this.
 			// This is needed because the number of revealed tiles is not
 			// updated properly until the next check if more than one tile is
 			// revealed. This is that extra check to combat this.
@@ -347,12 +351,11 @@ function regClick() {
 		}
 	}
 	else {
-		console.log("No collision. Should be rare. (can't click on a flag.");
+		console.log("No collision. Should be rare.");
 	}
 
 	render();
 	renderFlag();
-	printBoard();
 }
 
 function checkCollision() {
@@ -416,7 +419,7 @@ function win() {
 	resultText.innerHTML = "You Win!";
 	clearInterval(COUNTER);
 	// remove ability to click on board.
-	// They can still right click. Is this bad?
+	// They can still right click.
 	document.getElementById("canvas").removeEventListener("click", regClick);
 }
 
@@ -434,13 +437,12 @@ function lose() {
 	resultText.innerHTML = "You Lost";
 	clearInterval(COUNTER);
 	// remove ability to click on board.
-	// They can still right click. Is this bad?
+	// They can still right click.
 	document.getElementById("canvas").removeEventListener("click", regClick);
 }
 
 function revealTile(row, col) {
 	// recursive function to reveal blank tiles. Make sure it's a hidden tile that's not a bomb.
-	// should probably check that there isn't a flag as well.
 	if (row >= 0 && row < 8 && col >= 0 && col < 8 && (BOARD[row][col] == 0 || BOARD[row][col] >= 13) && FLAG_BOARD[row][col] != 1) {
 		// set the tile to revealed.
 		if (BOARD[row][col] != 0) {
@@ -448,10 +450,14 @@ function revealTile(row, col) {
 		}
 		if (BOARD[row][col] == 0) {
 			BOARD[row][col] = 2;
-			revealTile(row+1, col);
-			revealTile(row-1, col);
 			revealTile(row, col+1);
 			revealTile(row, col-1);
+			revealTile(row+1, col);
+			revealTile(row+1, col+1);
+			revealTile(row+1, col-1);
+			revealTile(row-1, col);
+			revealTile(row-1, col+1);
+			revealTile(row-1, col-1);
 		}
 	}
 }
@@ -460,7 +466,6 @@ function render() {
 	// Render the board.
 	// gutter: 2px
 	var unclicked = "#babdb6";
-	//var clicked = "#deddedc";
 	var clicked = "#dcdee0";
 	var gutterx = 0;
 	var guttery = 0;
@@ -612,7 +617,6 @@ function shuffle(array) {
 		array[counter] = array[index];
 		array[index] = temp;
 	}
-
 	return array;
 }
 

@@ -3,33 +3,34 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Play JMines</title>
+		<title>Play jmines</title>
 		<link rel="stylesheet" type="text/css" href="./src/css/style.css">
 	</head>
 	<body>
-		<noscript>You must have JavaScript enabled to play this game</noscript>
-		<h1>JMines</h1>
+		<noscript>You must have JavaScript enabled to play this game.</noscript>
+		<h1>Play jmines</h1>
+		<!-- This file is part of jmines -->
 		<div id="mobile">Please come back on a desktop or laptop to play this game.</div>
 		<div id="game-container">
 			<div class="canvas-container">
 				<canvas id="canvas" width="270" height="270"></canvas>
 			</div>
 			<div class="flag-container">
-				<div id="flag-count">0/10</div>
 				<div class="flag-image">
 					<img src="./src/img/flag.svg" class="flag">
 				</div>
-				</div>
+				<div id="flag-count">0/10</div>
 			</div>
 			<div class="timer-container">
-				<div id="timer">0</div>
 				<div id="timer-clock">
 					<img src="./src/img/clock.svg" class="clock">
 				</div>
+				<div id="timer">0</div>
 			</div>
 			<div class="restart-container">
 				<button id="restart-button">Restart</button>
 				<div id="result-text">---</div>
+				<div id="help"><a href="instructions.html" target="_blank">?</a>
 			</div>
 		</div>
 		<script src="./src/js/game.js"></script>
