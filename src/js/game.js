@@ -2,7 +2,7 @@
 Note: This is my first real foray into JavaScript, so that code below will
 probably reflect that. Enjoy.
 
-
+jmines
 Copyright 2017 Kyle Schreiber
 
 This program is free software: you can redistribute it and/or modify
