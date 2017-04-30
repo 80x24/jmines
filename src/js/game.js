@@ -313,7 +313,6 @@ function regClick() {
 	// Start the clock at the beginning of the game.
 	if (START) {
 		COUNTER = setInterval(timer, 1000);
-		START = false;
 	}
 
 	// what to do when we click.
@@ -323,9 +322,17 @@ function regClick() {
 	var col = collision_values[2];
 	if (collision_values[0] == 1 && FLAG_BOARD[row][col] != 1) {
 		// lose
+		// make sure it's not the first click
 		if (BOARD[row][col] == 1) {
-			BOARD[row][col] = 3;
-			lose();
+			if (START) {
+				init();
+				START = false;
+				regClick();
+			}
+			else {
+				BOARD[row][col] = 3;
+				lose();
+			}
 		}
 		// hidden tiles 1 - 8
 		else if (BOARD[row][col] >= 13) {
@@ -353,7 +360,9 @@ function regClick() {
 	else {
 		console.log("No collision. Should be rare.");
 	}
-
+	if (START) {
+		START = false;
+	}
 	render();
 	renderFlag();
 }
